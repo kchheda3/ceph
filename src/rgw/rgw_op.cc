@@ -3834,6 +3834,12 @@ void RGWCreateBucket::execute(optional_yield y)
       op_ret = -ERR_BUCKET_EXISTS;
       return;
     }
+
+    // use |createparams.bucket_exists| to decide whether to update the existing
+    // existing buket_instance object or create new instance object and index shard objects.
+    createparams.bucket_exists = true;
+    createparams.bucket_id = info.bucket.bucket_id;
+    createparams.marker = info.bucket.marker;
   }
 
   s->bucket_owner = policy.get_owner();
